@@ -1,0 +1,24 @@
+:host {
+  display: grid;
+  grid-template-rows: 2fr 3fr 1fr;
+}
+
+.question-area {
+  grid-row: 2 / 3;
+  font-size: x-large;
+  margin: 30px;
+}
+
+.answers-area {
+  grid-row: 3 / 4;
+}
+
+.buttons-area {
+  grid-row: 4/ 5;
+  margin: 0 auto;
+}
+
+li {
+  list-style: none;
+  margin: 10px;
+}
