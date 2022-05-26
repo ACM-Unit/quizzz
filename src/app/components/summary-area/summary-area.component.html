@@ -1,0 +1,8 @@
+<ul>
+  <li *ngFor="let item of quiz.questions; let i = index"
+  ><i *ngIf="quiz.questions[i].userAnswer!=-1" [ngStyle]="{color:'green'}" class="glyphicon glyphicon-record"></i>
+    Question {{i+1}}
+    <i *ngIf="quiz.questions[i].userAnswer==quiz.questions[i].correctAnswer && quiz.isFinished" [ngStyle]="{color:'green'}" class="glyphicon glyphicon-ok"></i>
+    <i *ngIf="quiz.questions[i].userAnswer!=quiz.questions[i].correctAnswer && quiz.isFinished" [ngStyle]="{color:'red'}" class="glyphicon glyphicon-remove"></i>
+  </li>
+</ul>

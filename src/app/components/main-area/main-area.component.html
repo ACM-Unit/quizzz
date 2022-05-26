@@ -1,0 +1,12 @@
+<div *ngIf="!quiz.isFinished">
+<p>{{quiz.questions[currentQuestion].caption}}</p>
+<ul>
+  <li *ngFor="let answer of quiz.questions[currentQuestion].answers"><input value="{{quiz.questions[currentQuestion].answers.indexOf(answer)}}" [(ngModel)]="selectedAnswer" type="radio"> {{answer}}</li>
+</ul>
+<input type="button" class="btn btn-primary" (click)="answer(selectedAnswer)"  value="answer">
+<div class="btn-group"><button class="btn btn-default" (click)="prevQuestion()">back</button><button (click)="nextQuestion()" class="btn btn-default">next</button></div>
+</div>
+<div *ngIf="quiz.isFinished">
+  <h1>Congradulations!!!!</h1>
+  <h2>you result is {{allCorrectAnswers()}} correct answers from {{quiz.questions.length}}</h2>
+</div>
