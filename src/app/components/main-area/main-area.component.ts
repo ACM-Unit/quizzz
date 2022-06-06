@@ -1,53 +1,69 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Quiz} from "../../model/Quiz";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {QuizService} from "../../services/quiz.service";
+import {Question} from "../../model/Question";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-main-area',
   templateUrl: './main-area.component.html',
   styleUrls: ['./main-area.component.css']
 })
-export class MainAreaComponent implements OnInit {
-  @Input("quiz")
-  quiz: Quiz = new Quiz([], false);
+export class MainAreaComponent implements OnInit, OnDestroy {
+
+  sub = new Subscription();
+
+  questions: Question[] = [];
 
   nextText: string = "next";
+
+  isFinish: boolean = false;
 
   currentQuestion: number = 0;
 
   selectedAnswer: number = 0;
 
 
-  constructor() { }
+  constructor(private quizService: QuizService) {
+  }
 
   ngOnInit(): void {
+    this.sub.add(this.quizService.getQuestions().subscribe(questions => {
+      this.questions = questions
+    }));
+
+    this.sub.add(this.quizService.getCurrentQuestion().subscribe(question => {
+      this.currentQuestion = question;
+    }));
+
+    this.sub.add(this.quizService.isFinished().subscribe(finish => {
+      this.isFinish = finish;
+    }));
   }
 
   nextQuestion(): void {
-     if (this.currentQuestion < this.quiz.questions.length-1) {
-       this.currentQuestion ++;
-     } else {
-       this.quiz.isFinished = true;
-     }
-    if (this.currentQuestion == this.quiz.questions.length-1) {
+    this.quizService.nextQuestion()
+    if (this.currentQuestion == this.questions.length-1) {
       this.nextText = "finish";
     }
   }
 
   prevQuestion(): void {
-    if (this.currentQuestion > 0 && !this.quiz.isFinished) {
-      this.currentQuestion--;
-    }
-    if (this.currentQuestion == this.quiz.questions.length-1) {
+   this.quizService.prevQuestion();
+    if (this.currentQuestion == this.questions.length-1) {
       this.nextText = "finish";
     }
   }
 
   answer(answer: number): void {
-    this.quiz.questions[this.currentQuestion].userAnswer = answer;
+    this.quizService.setAnswer(answer);
   }
 
   allCorrectAnswers(): number {
-    return this.quiz.questions.filter(q => q.correctAnswer == q.userAnswer).length;
+   return this.questions.filter(q => q.correctAnswer == q.userAnswer).length
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
 }

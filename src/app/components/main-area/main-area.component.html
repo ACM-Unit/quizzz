@@ -1,17 +1,17 @@
-<div [ngStyle]="{height: '100%'}" *ngIf="!quiz.isFinished">
-<div class="question-area"><p>{{quiz.questions[currentQuestion].caption}}</p></div>
+<div [ngStyle]="{height: '100%'}" *ngIf="!this.isFinish">
+<div class="question-area"><p>{{this.questions[this.currentQuestion].caption}}</p></div>
 <ul class="answers-area">
-  <li *ngFor="let answer of quiz.questions[currentQuestion].answers">
-    <input value="{{quiz.questions[currentQuestion].answers.indexOf(answer)}}" [(ngModel)]="selectedAnswer" type="radio">
+  <li *ngFor="let answer of this.questions[this.currentQuestion].answers">
+    <input value="{{this.questions[this.currentQuestion].answers.indexOf(answer)}}" [(ngModel)]="selectedAnswer" type="radio">
     <span>{{answer}}</span>
   </li>
   <input type="button" class="btn btn-primary" (click)="answer(selectedAnswer)"  value="answer">
 </ul>
 <div class="buttons-area btn-group">
   <button class="btn btn-default" (click)="prevQuestion()">back</button>
-  <button (click)="nextQuestion()" class="btn btn-default">{{nextText}}</button></div>
+  <button (click)="nextQuestion()" class="btn btn-default">{{this.nextText}}</button></div>
 </div>
-<div [ngStyle]="{height: '100%'}" *ngIf="quiz.isFinished">
-  <h1>Congradulations!!!!</h1>
-  <h2>you result is {{allCorrectAnswers()}} correct answers from {{quiz.questions.length}}</h2>
+<div [ngStyle]="{height: '100%'}" *ngIf="this.isFinish">
+  <h1>Congratulations!!!!</h1>
+  <h2>your result is {{allCorrectAnswers()}} correct answers from {{this.questions.length}}</h2>
 </div>
